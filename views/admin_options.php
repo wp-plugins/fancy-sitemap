@@ -97,8 +97,8 @@
                 </div>
                 <div class="formRow">
                     <label for="bbc">Font Size:</label>
-                    <input type="text" name="options[font_size]" size="1" value="<?php echo isset($options['font_size'])?$options['font_size']:'8';?>" /> X
-                    <input type="text" name="options[font_size_hover]" size="1" value="<?php echo isset($options['font_size_hover'])?$options['font_size_hover']:'22';?>" />(while hover)
+                    <input type="text" name="options[font_size]" size="1" value="<?php echo isset($options['font_size'])?$options['font_size']:'8';?>" />
+                    (<input type="text" name="options[font_size_hover]" size="1" value="<?php echo isset($options['font_size_hover'])?$options['font_size_hover']:'22';?>" /> while hover)
                 </div>
                 <div class="formRow">
                     <label for="lc">Font Color:</label>

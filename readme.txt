@@ -3,7 +3,7 @@ Contributors: dexxaye
 Tags: sitemap
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 0.5
+Stable tag: 0.6
 
 Fancy sitemap generates a javascript/svg sitemap.
 

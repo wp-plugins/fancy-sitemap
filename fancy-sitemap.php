@@ -4,7 +4,7 @@
   Plugin Name: Fancy Sitemap
   Plugin URI: http://www.bunchacode.com/programming/fancy-sitemap/
   Description: generates a javascript/html5 sitemap.
-  Version: 0.5
+  Version: 0.6
   Author: Jiong Ye
   Author URI: http://www.bunchacode.com
   License: GPL2
@@ -52,7 +52,7 @@ function fancy_sitemap_shortcode() {
 add_shortcode('fancy-sitemap', 'fancy_sitemap_shortcode' );
 
 function fancy_sitemap_get_output($preview = false){
-
+    $doSitemap = false;
     $options = get_option(FS_OPTIONS);
     $options = !is_array($options)?unserialize($options):$options;
     $type = get_option(FS_TYPE_KEY);
@@ -72,7 +72,8 @@ function fancy_sitemap_get_output($preview = false){
             $output .= '<ul class="fancySitemap">' . $pages . '</ul><div id="sitemapHolder"></div>';
         else
             $output .= '<ul class="fancySitemap"><li class="page-item page-item-0"><a href="'.get_bloginfo('url').'">' . $options['home_text'] . '</a><ul class="children">' . $pages . '</ul></li></ul><div id="sitemapHolder"></div>';
-
+        
+        $doSitemap = true;
     }
     else if($type=='menu'){
         $menus = explode(',', get_option(FS_TYPE_MENU_INCLUDE));
@@ -99,35 +100,40 @@ function fancy_sitemap_get_output($preview = false){
             $output .= '</ul></li></ul><div id="sitemapHolder"></div>';
         else
             $output .= '</ul><div id="sitemapHolder"></div>';
-    }
-            
-    $output .= '<script type="text/javascript">';
-    $output .= "var options = {};\n";
-    foreach($options as $name => $value){
-        $output .= "options.$name = '$value';\n";
+        
+        $doSitemap = true;
     }
     
-    //get node positions
-    $positions = get_option(FS_POSITIONS);
-    $positions = array_filter(explode('||', $positions));
-    $output .= "var positions = {};\n";
-    
-    foreach($positions as $p){
-        $v = explode(',', $p);
-        if(count($v) == 3)
-            $output .= "positions[".$v[0]."] = {x:" . $v[1] . ", y:" . $v[2] . "};\n";
+    if($doSitemap){
+        $output .= '<script type="text/javascript">';
+        $output .= "var options = {};\n";
+        foreach($options as $name => $value){
+            $output .= "options.$name = '$value';\n";
+        }
+
+        //get node positions
+        $positions = get_option(FS_POSITIONS);
+        $positions = array_filter(explode('||', $positions));
+        $output .= "var positions = {};\n";
+
+        foreach($positions as $p){
+            $v = explode(',', $p);
+            if(count($v) == 3)
+                $output .= "positions[".$v[0]."] = {x:" . $v[1] . ", y:" . $v[2] . "};\n";
+        }
+
+        if($preview){
+            $output .= "var preview = true";
+        }
+
+        $output .= '</script>';
+
+        $output = str_replace('current_page_item', '', $output);
+        $output = str_replace('current_page_ancestor', '', $output);
+
+        return $output;
     }
-    
-    if($preview){
-        $output .= "var preview = true";
-    }
-    
-    $output .= '</script>';
-    
-    $output = str_replace('current_page_item', '', $output);
-    $output = str_replace('current_page_ancestor', '', $output);
-    
-    return $output;
+    return '';
 }
 
 function fancy_sitemap_admin_menu() {
@@ -171,8 +177,8 @@ function fancy_sitemap_show_options() {
         }
 
         update_option(FS_TYPE_KEY, $type);
-        update_option(FS_TYPE_PAGE_EXCLUDE, implode(',', array_filter($_POST['page_exclude'])));
-        update_option(FS_TYPE_MENU_INCLUDE, implode(',', array_filter($_POST['menus'])));
+        update_option(FS_TYPE_PAGE_EXCLUDE, isset($_POST['page_exclude'])?implode(',', array_filter($_POST['page_exclude'])):array());
+        update_option(FS_TYPE_MENU_INCLUDE, isset($_POST['menus'])?implode(',', array_filter($_POST['menus'])):array());
         update_option(FS_OPTIONS, serialize($o));
     }
     global $wpdb;
