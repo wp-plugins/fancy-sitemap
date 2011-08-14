@@ -1,0 +1,5 @@
+#fancySitemapAdmin fieldset{border:1px solid #c3c3c3;padding:20px;margin:20px 0;}
+#fancySitemapAdmin fieldset legend{padding:4px 8px;border:1px solid #c3c3c3;}
+#fancySitemapAdmin .formRow{margin:10px 0;}
+#fancySitemapAdmin .formRow label{vertical-align: top;}
+#fancySitemapAdmin select{width:auto;height:auto;min-width:350px;}
