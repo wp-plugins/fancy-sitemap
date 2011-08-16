@@ -1,4 +1,7 @@
 (function($) {
+    /*
+     * function stolen from rephaeljs.com demo to create a path between objects
+     */
     Raphael.fn.connection = function (obj1, obj2, line, bg) {
         if (obj1.line && obj1.from && obj1.to) {
             line = obj1;
@@ -57,6 +60,7 @@
                 }
             }
         }
+        
         if (dis.length == 0) {
             var res = [0, 4];
         } else {
@@ -64,15 +68,17 @@
         }
         var x1 = p[res[0]].x,
         y1 = p[res[0]].y,
-        x4 = p[res[1]].x,
-        y4 = p[res[1]].y;
+        x4 = p[4].x,
+        y4 = p[4].y;
         dx = Math.max(Math.abs(x1 - x4) / 2, 10);
         dy = Math.max(Math.abs(y1 - y4) / 2, 10);
         var x2 = [x1, x1, x1 - dx, x1 + dx][res[0]].toFixed(3),
         y2 = [y1 - dy, y1 + dy, y1, y1][res[0]].toFixed(3),
         x3 = [0, 0, 0, 0, x4, x4, x4 - dx, x4 + dx][res[1]].toFixed(3),
         y3 = [0, 0, 0, 0, y1 + dy, y1 - dy, y4, y4][res[1]].toFixed(3);
-        var path = ["M", x1.toFixed(3), y1.toFixed(3), "C", x2, y2, x3, y3, x4.toFixed(3), y4.toFixed(3)].join(",");
+        
+        var lineStyle = options.line_style?options.line_style:'C';
+        var path = ["M", x1.toFixed(3), y1.toFixed(3), lineStyle, x2, y2, x3, y3, x4.toFixed(3), y4.toFixed(3)].join(",");
         if (line && line.line) {
             line.bg && line.bg.attr({
                 path: path
@@ -101,13 +107,42 @@
             
     $(document).ready(function(){
         var sitemap = cleanHtml($('.fancySitemap')).hide();
-        var holder = $('#sitemapHolder');
+        var holder = $('#sitemapHolder').css({width:options.canvas_width,height:options.canvas_height});
         var r = Raphael("sitemapHolder", holder.width(), holder.height());
         var connections = [];
         var tree = [];
         
-        $('#savePosition').hide();
+        if(typeof preview !== 'undefined' && preview==true){
+            $('#savePosition').hide();
+            
+            //display width and height markers
+            var widthMarker = Math.floor(holder.width()/10);
+            var markerLeft = widthMarker;
+            while(markerLeft < holder.width()){
+                var marker = $('<div />',{'class':'hMarkerTop'})
+                    .css({left:markerLeft})
+                    .appendTo(holder);
+               
+                marker.clone().attr('class', 'hMarkerBot').appendTo(holder);
+                markerLeft += widthMarker;
+            }
+            
+            var heightMarker = Math.floor(holder.height()/10);
+            var markerTop = heightMarker;
+            while(markerTop < holder.height()){
+                var marker = $('<div />',{'class':'vMarkerLeft'})
+                    .css({top:markerTop})
+                    .appendTo(holder)
+                    .clone()
+                        .attr('class', 'vMarkerRight')
+                        .appendTo(holder);
+                markerTop += heightMarker;
+            }
+        }
         
+        /*
+         * dragger, move and up are callback functions for drag event of block
+         */
         var dragger = function () {
             this.ox = this.attr("x");
             this.oy = this.attr("y");
@@ -186,6 +221,8 @@
         }
         
         /*
+         * recursive function to fill a tree from ul
+         * blocks are created here
          * parent = root or subroot of a tree
          * canvasWidth = canvas width
          * r = Raphael object
@@ -268,6 +305,14 @@
             return null;
         }
     
+        /*
+         * recursive function to link the blocks together with svg path
+         * and stylizes blocks
+         * tree = array of object
+         * parent = root of a subtree
+         * c = connection array
+         * r = rapheal object
+         */
         function buildTree(tree, parent, c, r){
             if(tree != null){
                 var i = 0;

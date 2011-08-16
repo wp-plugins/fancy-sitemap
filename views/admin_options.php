@@ -63,6 +63,11 @@
             <fieldset>
                 <legend>Options</legend>
                 <div class="formRow">
+                    <label for="bbc">Canvas Size:</label>
+                    <input type="text" name="options[canvas_width]" size="1" value="<?php echo !empty($options['canvas_width'])?$options['canvas_width']:'450';?>" /> X
+                    <input type="text" name="options[canvas_height]" size="1" value="<?php echo !empty($options['canvas_height'])?$options['canvas_height']:'250';?>" />
+                </div>
+                <div class="formRow">
                     <label for="bbc">Auto Block Width:</label>
                     <input type="hidden" name="options[auto_size]" value="0" /> 
                     <input type="checkbox" name="options[auto_size]" size="1" id="autoSize" value="1" <?php echo $options['auto_size']=='1'?'checked="checked"':'';?> />
@@ -96,6 +101,14 @@
                     <input type="text" name="options[line_width]" value="<?php echo isset($options['line_width'])?$options['line_width']:'1';?>" />
                 </div>
                 <div class="formRow">
+                    <label for="lc">Line Style:</label>
+                    <select name="options[line_style]">
+                        <option value="C" <?php echo isset($options['line_style']) && $options['line_style']=='C'?'selected="selected"':'';?>>Curve Line</option>
+                        <option value="L" <?php echo isset($options['line_style']) && $options['line_style']=='L'?'selected="selected"':'';?>>Straight Line</option>
+                        <option value="T" <?php echo isset($options['line_style']) && $options['line_style']=='Q'?'selected="selected"':'';?>>Crazy Curve</option>
+                    </select>
+                </div>
+                <div class="formRow">
                     <label for="bbc">Font Size:</label>
                     <input type="text" name="options[font_size]" size="1" value="<?php echo isset($options['font_size'])?$options['font_size']:'8';?>" />
                     (<input type="text" name="options[font_size_hover]" size="1" value="<?php echo isset($options['font_size_hover'])?$options['font_size_hover']:'22';?>" /> while hover)
@@ -121,12 +134,10 @@
                 <legend>Preview</legend>
                 <small>Use this to preview and position your sitemap.<br />Admin section and frontend should have a similar width so it looks the same on both.</small>
                 <div class="formRow">
-                    <div id="sitemapHolder">
-                        <?php echo fancy_sitemap_get_output(true);?>
-                    </div>
-                    <div class="formRow">
-                        <input type="submit" value="Save" class="button" id="savePosition" />
-                    </div>
+                    <?php echo fancy_sitemap_get_output(true);?>
+                </div>
+                <div class="formRow">
+                    <input type="submit" value="Save" class="button" id="savePosition" />
                 </div>
             </fieldset>
         </form>

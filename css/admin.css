@@ -2,4 +2,9 @@
 #fancySitemapAdmin fieldset legend{padding:4px 8px;border:1px solid #c3c3c3;}
 #fancySitemapAdmin .formRow{margin:10px 0;}
 #fancySitemapAdmin .formRow label{vertical-align: top;}
-#fancySitemapAdmin select{width:auto;height:auto;min-width:350px;}
+#page_exclude{width:auto;height:250px !important;min-width:350px;}
+#sitemapHolder{border:1px solid #000000;position:relative;}
+.hMarkerTop{position:absolute;top:0;height:5px;width:2px;background:#ff0000;}
+.hMarkerBot{position:absolute;bottom:0;height:5px;width:2px;background:#ff0000;}
+.vMarkerLeft{position:absolute;left:0;height:2px;width:5px;background:#ff0000;}
+.vMarkerRight{position:absolute;right:0;height:2px;width:5px;background:#ff0000;}
