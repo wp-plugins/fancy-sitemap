@@ -105,7 +105,7 @@
                     <select name="options[line_style]">
                         <option value="C" <?php echo isset($options['line_style']) && $options['line_style']=='C'?'selected="selected"':'';?>>Curve Line</option>
                         <option value="L" <?php echo isset($options['line_style']) && $options['line_style']=='L'?'selected="selected"':'';?>>Straight Line</option>
-                        <option value="T" <?php echo isset($options['line_style']) && $options['line_style']=='Q'?'selected="selected"':'';?>>Crazy Curve</option>
+                        <option value="T" <?php echo isset($options['line_style']) && $options['line_style']=='T'?'selected="selected"':'';?>>Crazy Curve</option>
                     </select>
                 </div>
                 <div class="formRow">

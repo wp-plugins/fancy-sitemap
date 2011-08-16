@@ -4,7 +4,7 @@
   Plugin Name: Fancy Sitemap
   Plugin URI: http://www.bunchacode.com/programming/fancy-sitemap/
   Description: generates a javascript/html5 sitemap.
-  Version: 0.7
+  Version: 0.7.1
   Author: Jiong Ye
   Author URI: http://www.bunchacode.com
   License: GPL2
